@@ -15,4 +15,19 @@ public class Sport {
     @OneToMany(mappedBy = "sport")
     private Set<Epreuve> epreuves;
 
+    public String getLibelleFR() {
+        return libelleFR;
+    }
+
+    public void setLibelleFR(String libelleFR) {
+        this.libelleFR = libelleFR;
+    }
+
+    public String getLibelleEN() {
+        return libelleEN;
+    }
+
+    public void setLibelleEN(String libelleEN) {
+        this.libelleEN = libelleEN;
+    }
 }

@@ -16,4 +16,20 @@ public class Epreuve {
     private Sport sport;
     @OneToMany(mappedBy = "epreuve")
     private List<Resultat> resultats;
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public Sport getSport() {
+        return sport;
+    }
+
+    public void setSport(Sport sport) {
+        this.sport = sport;
+    }
 }

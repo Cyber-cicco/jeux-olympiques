@@ -2,6 +2,7 @@ package org.example.parser;
 
 import org.example.dao.*;
 import org.example.entites.*;
+import org.example.types.Medaille;
 import org.example.types.Season;
 import org.example.types.Sex;
 
@@ -38,12 +39,15 @@ public class EvenementParser {
         position++;
     }
 
-    private void parseNomAthlete(){
+    private String getBasicFieldString(){
         int start = position;
-        while (text.charAt(position) != CSV_SEPARATOR){
+        while(text.charAt(position) != CSV_SEPARATOR){
             nextChar();
         }
-        var nomAthlete = text.substring(start, position);
+        return text.substring(start, position);
+    }
+    private void parseNomAthlete(){
+        var nomAthlete = getBasicFieldString();
         athlete.setName(nomAthlete);
     }
 
@@ -62,29 +66,17 @@ public class EvenementParser {
         }
     }
     private void parseHeightAthlete() {
-        int start = position;
-        while (text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        String height = text.substring(start, position);
+        String height = getBasicFieldString();
         athlete.setHeight(Integer.parseInt(height));
     }
 
     private void parseWeightForSession() {
-        int start = position;
-        while (text.charAt(position)!= CSV_SEPARATOR){
-            nextChar();
-        }
-        var weight = text.substring(start, position);
+        var weight = getBasicFieldString();
         resultat.setPoids(Double.parseDouble(weight));
     }
 
     private void setTeam(){
-        int start = position;
-        while (text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        String team = text.substring(start, position);
+        String team = getBasicFieldString();
         String query = "select o from Organisation o where o.codeCIO = :identifier0";
         organisationDao.extraireParId(team, query, List.of(team));
     }
@@ -96,20 +88,12 @@ public class EvenementParser {
     }
 
     private void parseYear() {
-        int start = position;
-        while (text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        String year = text.substring(start, position);
+        String year = getBasicFieldString();
         session.setYear(Integer.parseInt(year));
     }
 
     private void parseSeasons(){
-        int start = position;
-        while(text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        var season = text.substring(start, position);
+        var season = getBasicFieldString();
         if (season.equals("Summer")) {
             session.setSeason(Season.SUMMER);
         } else {
@@ -118,24 +102,29 @@ public class EvenementParser {
     }
 
     private void parseCity(){
-        int start = position;
-        while(text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        String city = text.substring(start, position);
-
+        String city = getBasicFieldString();
+        session.setCity(city);
     }
 
     private void getSport(){
-
+        String nomSport = getBasicFieldString();
+        String query = "select s from Sport s where s.libelleEN = :indentifier0";
+        sport = sportDao.extraireParId(nomSport, query, List.of(nomSport));
+        epreuve.setSport(sport);
     }
 
     private void parseEpreuve(){
-
+        String nomEpreuve = getBasicFieldString();
+        epreuve.setEvent(nomEpreuve);
     }
 
     private void parseResultat(){
-
+        String nom = text.substring(position);
+        switch (nom){
+            case "Gold" -> resultat.setMedaille(Medaille.OR);
+            case "Silver" -> resultat.setMedaille(Medaille.ARGENT);
+            case "Bronze" -> resultat.setMedaille(Medaille.BRONZE);
+        }
     }
 
     private void endParsing(){

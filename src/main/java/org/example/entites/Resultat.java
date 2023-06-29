@@ -2,6 +2,7 @@ package org.example.entites;
 
 import jakarta.persistence.*;
 import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
+import org.example.types.Medaille;
 
 @Entity
 public class Resultat {
@@ -23,6 +24,9 @@ public class Resultat {
     private Epreuve epreuve;
     private Double poids;
     private Integer age;
+
+    @Enumerated
+    private Medaille medaille;
 
     public Session getSession() {
         return session;
@@ -66,6 +70,14 @@ public class Resultat {
 
     public Integer getAge() {
         return age;
+    }
+
+    public Medaille getMedaille() {
+        return medaille;
+    }
+
+    public void setMedaille(Medaille medaille) {
+        this.medaille = medaille;
     }
 
     public void setAge(Integer age) {
