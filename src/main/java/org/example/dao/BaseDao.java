@@ -29,6 +29,10 @@ public abstract class BaseDao<T> {
         return (T) repository.findByField(query, args).get(0);
     }
 
+    public void persist(T entity){
+        repository.persistEntity(entity);
+    }
+
     @SneakyThrows
     public void close(){
         repository.close();

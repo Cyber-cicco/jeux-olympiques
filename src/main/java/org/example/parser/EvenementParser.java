@@ -8,10 +8,7 @@ import org.example.types.Sex;
 
 import java.util.List;
 
-public class EvenementParser {
-
-    private int position;
-    private final char CSV_SEPARATOR = ';';
+public class EvenementParser extends Parser {
 
     private AthleteDao athleteDao = DaoFactory.getAthleteDao();
     private EpreuveDao epreuveDao = DaoFactory.getEpreuveDao();
@@ -19,12 +16,12 @@ public class EvenementParser {
     private ResultatDao resultatDao = DaoFactory.getResultatDao();
     private SessionDao sessionDao = DaoFactory.getSessionDao();
     private SportDao sportDao = DaoFactory.getSportDao();
-    private String text;
     private Athlete athlete;
     private Epreuve epreuve;
     private Session session;
     private Resultat resultat;
     private Sport sport;
+    private Organisation organisation;
 
     private void initializeParsing(String text){
         this.text = text;
@@ -35,17 +32,6 @@ public class EvenementParser {
         resultat = new Resultat();
     }
 
-    private void nextChar(){
-        position++;
-    }
-
-    private String getBasicFieldString(){
-        int start = position;
-        while(text.charAt(position) != CSV_SEPARATOR){
-            nextChar();
-        }
-        return text.substring(start, position);
-    }
     private void parseNomAthlete(){
         var nomAthlete = getBasicFieldString();
         athlete.setName(nomAthlete);
@@ -78,7 +64,7 @@ public class EvenementParser {
     private void setTeam(){
         String team = getBasicFieldString();
         String query = "select o from Organisation o where o.codeCIO = :identifier0";
-        organisationDao.extraireParId(team, query, List.of(team));
+        organisation = organisationDao.extraireParId(team, query, List.of(team));
     }
 
     private void ignoreGames(){
@@ -128,7 +114,10 @@ public class EvenementParser {
     }
 
     private void endParsing(){
-
+        resultat.setSession(session);
+        resultat.setAthlete(athlete);
+        resultat.setEpreuve(epreuve);
+        resultat.setOrganisation(organisation);
     }
 
     public void parseLine(String text){

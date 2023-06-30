@@ -1,7 +1,10 @@
 package org.example;
 
+import org.example.parser.FileParser;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        FileParser fileParser = new FileParser();
+        fileParser.readCSV();
     }
 }
