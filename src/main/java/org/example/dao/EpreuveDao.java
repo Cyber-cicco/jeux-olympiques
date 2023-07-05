@@ -7,4 +7,7 @@ public class EpreuveDao extends BaseDao<Epreuve> {
     public EpreuveDao() {
         super(RepositoryType.EPREUVE);
     }
+    public void putInCache(Epreuve epreuve){
+        cache.getCache().put(epreuve.getEventEN(), epreuve);
+    }
 }

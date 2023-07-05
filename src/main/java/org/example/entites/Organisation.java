@@ -20,4 +20,44 @@ public class Organisation {
 
     @OneToMany(mappedBy = "organisation")
     private List<Resultat> resultats;
+
+    public String getCodeCIO() {
+        return codeCIO;
+    }
+
+    public void setCodeCIO(String codeCIO) {
+        this.codeCIO = codeCIO;
+    }
+
+    public String getNomPaysFR() {
+        return nomPaysFR;
+    }
+
+    public void setNomPaysFR(String nomPaysFR) {
+        this.nomPaysFR = nomPaysFR;
+    }
+
+    public String getNomPaysEN() {
+        return nomPaysEN;
+    }
+
+    public void setNomPaysEN(String nomPaysEN) {
+        this.nomPaysEN = nomPaysEN;
+    }
+
+    public String getCodeISOAlpha() {
+        return codeISOAlpha;
+    }
+
+    public void setCodeISOAlpha(String codeISOAlpha) {
+        this.codeISOAlpha = codeISOAlpha;
+    }
+
+    public Boolean getObselete() {
+        return isObselete;
+    }
+
+    public void setObselete(Boolean obselete) {
+        isObselete = obselete;
+    }
 }

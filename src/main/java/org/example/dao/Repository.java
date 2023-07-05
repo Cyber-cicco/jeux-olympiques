@@ -3,10 +3,7 @@ package org.example.dao;
 import jakarta.persistence.*;
 import org.example.types.RepositoryType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Repository implements AutoCloseable {
@@ -59,7 +56,7 @@ public class Repository implements AutoCloseable {
      * Méthode ouvrant une nouvelle connexion et persistant de
      * multiples entités en une seule transaction
      * */
-    public <T> void persistMultipleEntites(List<T> entites){
+    public <T> void persistMultipleEntites(Collection<T> entites){
         EntityManager em = emf.createEntityManager();
         EntityTransaction tr = em.getTransaction();
         tr.begin();
