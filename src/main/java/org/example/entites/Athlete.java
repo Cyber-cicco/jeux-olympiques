@@ -7,7 +7,7 @@ import org.example.types.Sex;
 import java.util.List;
 
 @Entity
-public class Athlete {
+public class Athlete extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,5 +33,14 @@ public class Athlete {
 
     public void setSexe(Sex sex) {
         this.sex = sex;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

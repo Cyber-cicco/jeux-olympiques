@@ -26,21 +26,21 @@ public class SportParser extends Parser<Sport> {
     }
 
    private void endParsing(){
-        entities.add(sport);
-        if(hasToPersist) sportDao.persist(entities);
-    }
+       entities.add(sport);
+       if(hasToPersist) sportDao.persist(entities);
+   }
 
-    private void parseLibelleFR() {
-        int start = position;
-        while(position < text.length()){
-            nextChar();
-        }
-        String libelleFR = text.substring(start, position);
-        sport.setLibelleFR(libelleFR);
-    }
+   private void parseLibelleFR() {
+       int start = position;
+       while(position < text.length()){
+           nextChar();
+       }
+       String libelleFR = text.substring(start, position);
+       sport.setLibelleFR(libelleFR);
+   }
 
-    private void parseLibelleEn() {
-        String libelleEN = getBasicFieldString();
-        sport.setLibelleEN(libelleEN);
-    }
+   private void parseLibelleEn() {
+       String libelleEN = getBasicFieldString();
+       sport.setLibelleEN(libelleEN);
+   }
 }

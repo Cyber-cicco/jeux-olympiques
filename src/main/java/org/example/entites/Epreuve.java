@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Epreuve {
+public class Epreuve extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,5 +40,10 @@ public class Epreuve {
 
     public void setSport(Sport sport) {
         this.sport = sport;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return eventEN;
     }
 }

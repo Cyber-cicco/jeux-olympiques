@@ -5,7 +5,7 @@ import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
 import org.example.types.Medaille;
 
 @Entity
-public class Resultat {
+public class Resultat extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,5 +82,10 @@ public class Resultat {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return id.toString();
     }
 }

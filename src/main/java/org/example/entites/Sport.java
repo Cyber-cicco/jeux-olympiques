@@ -1,12 +1,13 @@
 package org.example.entites;
 
 import jakarta.persistence.*;
+import org.example.dao.BaseDao;
 
 import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Sport {
+public class Sport extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,5 +30,28 @@ public class Sport {
 
     public void setLibelleEN(String libelleEN) {
         this.libelleEN = libelleEN;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return libelleEN;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Sport{" +
+                "id=" + id +
+                ", libelleFR='" + libelleFR + '\'' +
+                ", libelleEN='" + libelleEN + '\'' +
+                ", epreuves=" + epreuves +
+                '}';
     }
 }

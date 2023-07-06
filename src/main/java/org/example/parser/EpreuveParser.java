@@ -1,15 +1,22 @@
 package org.example.parser;
 
+import org.example.config.CSVConfig;
 import org.example.dao.DaoFactory;
 import org.example.dao.EpreuveDao;
 import org.example.entites.Epreuve;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EpreuveParser extends Parser<Epreuve>{
     private boolean proceedParsing;
+    private boolean hasToPersist;
     private Epreuve epreuve;
     private EpreuveDao epreuveDao = DaoFactory.getEpreuveDao();
+    private List<Epreuve> epreuves = new ArrayList<>();
     private void initializeParsing(String text, int lineNumber){
         proceedParsing = lineNumber > 3;
+        hasToPersist = lineNumber == CSVConfig.EPREUVE_LINES;
         this.text = text;
         position = 0;
         epreuve = new Epreuve();
@@ -26,7 +33,8 @@ public class EpreuveParser extends Parser<Epreuve>{
         }
     }
     private void endParsing(){
-        epreuveDao.putInCache(epreuve);
+        epreuves.add(epreuve);
+        if(hasToPersist) epreuveDao.persist(epreuves);
     }
 
     private void parseEventFR() {

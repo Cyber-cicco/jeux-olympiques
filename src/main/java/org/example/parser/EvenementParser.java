@@ -70,8 +70,10 @@ public class EvenementParser extends Parser {
     private void parseHeightAthlete() {
         String height = getBasicFieldString();
         if(!height.equals("NA")) athlete.setHeight(Integer.parseInt(height));
-        athletes.add(athlete);
-        if(hasToPersist) athleteDao.persist(athletes);
+        resultat.setAthlete(athleteDao.setNeededPersistence(athlete, athletes));
+        if(hasToPersist){
+            athleteDao.persist(athletes);
+        }
     }
 
     private void parseWeightForSession() {
@@ -82,9 +84,9 @@ public class EvenementParser extends Parser {
     private void parseNOC(){
         String codeNOC = getBasicFieldString();
         String query = "select o from Organisation o where o.codeCIO = :identifier0";
-        System.out.println(text);
         if(codeNOC.equals("LIB")) codeNOC = "LBN";
-        if(!codeNOC.equals("IOA")) organisation = organisationDao.extraireParId(codeNOC, query, List.of(codeNOC));
+        if(!codeNOC.equals("IOA") && !codeNOC.equals("UNK")) organisation = organisationDao.extraireParId(codeNOC, query, List.of(codeNOC));
+        resultat.setOrganisation(organisation);
     }
 
     private void ignoreTeam(){
@@ -116,6 +118,8 @@ public class EvenementParser extends Parser {
     private void parseCity(){
         String city = getBasicFieldString();
         session.setCity(city);
+        resultat.setSession(sessionDao.setNeededPersistence(session, sessions));
+        if(hasToPersist) sessionDao.persist(sessions);
     }
 
     private void getSport(){
@@ -127,7 +131,9 @@ public class EvenementParser extends Parser {
 
     private void parseEpreuve(){
         String nomEpreuve = getBasicFieldString();
+        nomEpreuve = nomEpreuve.replaceFirst(sport.getLibelleEN(), "").trim();
         epreuve.setEventEN(nomEpreuve);
+        epreuveDao.changeEntityIfSport(epreuve, resultat);
     }
 
     private void parseResultat(){
@@ -137,15 +143,17 @@ public class EvenementParser extends Parser {
             case "Silver" -> resultat.setMedaille(Medaille.ARGENT);
             case "Bronze" -> resultat.setMedaille(Medaille.BRONZE);
         }
+        resultats.add(resultat);
     }
 
     private void endParsing(){
-        resultat.setSession(session);
-        resultat.setAthlete(athlete);
-        resultat.setEpreuve(epreuve);
-        resultat.setOrganisation(organisation);
         if(hasToPersist){
+            System.out.println(text);
+            resultatDao.persist(resultats);
+            organisations.clear();
             athletes.clear();
+            sessions.clear();
+            resultats.clear();
         }
     }
 

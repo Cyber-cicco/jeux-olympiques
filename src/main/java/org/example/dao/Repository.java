@@ -2,6 +2,8 @@ package org.example.dao;
 
 import jakarta.persistence.*;
 import org.example.types.RepositoryType;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -142,6 +144,16 @@ public class Repository implements AutoCloseable {
         }
         query.setMaxResults(maxResults);
         return query.getResultList();
+    }
+
+    public void executeNativeQuery(String statement){
+        EntityManager em  = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        Query nativeQuery = em.createNativeQuery(statement);
+        nativeQuery.executeUpdate();
+        transaction.commit();
+        em.close();
     }
 
     /**

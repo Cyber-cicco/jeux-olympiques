@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Organisation {
+public class Organisation extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +59,10 @@ public class Organisation {
 
     public void setObselete(Boolean obselete) {
         isObselete = obselete;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return codeCIO;
     }
 }

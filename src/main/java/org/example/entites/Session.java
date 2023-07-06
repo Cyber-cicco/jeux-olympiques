@@ -6,7 +6,7 @@ import org.example.types.Season;
 import java.util.List;
 
 @Entity
-public class Session {
+public class Session extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,5 +40,10 @@ public class Session {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return year + season.toString();
     }
 }

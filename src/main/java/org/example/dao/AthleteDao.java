@@ -7,4 +7,5 @@ public class AthleteDao extends BaseDao<Athlete> {
     public AthleteDao() {
         super(RepositoryType.ATHLETE);
     }
+
 }
